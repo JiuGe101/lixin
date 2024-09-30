@@ -22,7 +22,8 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "Key.h"
+#include "Led.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -32,10 +33,7 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-#define LED_GPIO GPIOC
-#define LED_GPIO_PIN GPIO_PIN_13
-#define KEY_GPIO GPIOC
-#define KEY_GPIO_PIN GPIO_PIN_14
+
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -98,18 +96,11 @@ int main(void)
     while (1)
     {
 
-        if(HAL_GPIO_ReadPin(KEY_GPIO, KEY_GPIO_PIN) == 0)
-        {
-            HAL_Delay(20);
-            if(HAL_GPIO_ReadPin(KEY_GPIO, KEY_GPIO_PIN) == 0)
-                HAL_GPIO_WritePin(LED_GPIO, LED_GPIO_PIN, 0);
-            else
-                HAL_GPIO_WritePin(LED_GPIO, LED_GPIO_PIN, 1);
-        }
-        else
-        {
-            HAL_GPIO_WritePin(LED_GPIO, LED_GPIO_PIN, 1);
-        }
+        if(key_read()==0)
+			led_on();
+		else
+			led_off();
+			
         /* USER CODE END WHILE */
 
         /* USER CODE BEGIN 3 */
