@@ -3,11 +3,12 @@
  *
  * All Rights Reserved.
  *
- * @file led.h
+ * @file key.h
  *
  * @par dependencies
+ * - stdint.h
  *
- * @author ShiYaun
+ * @author ShiYuan
  *
  * @brief change the status of led according to key.
  *
@@ -15,18 +16,28 @@
  *
  * call directly.
  *
- * @version V1.0 2024-10-10
+ * @version V1.0 2024-10-13
  *
  * @note 1 tab == 4 spaces!
  *
  *****************************************************************************/
-#ifndef __LED_H__
-#define __LED_H__
+#ifndef __KEY_H__
+#define __KEY_H__
+//******************************** Includes *********************************//
+#include <stdint.h>
+//******************************** Includes *********************************//
 //******************************** Defines **********************************//
-#define LED_GPIO GPIOC
-#define LED_GPIO_PIN GPIO_PIN_13
+#define KEY_GPIO GPIOA
+#define KEY_GPIO_PIN GPIO_PIN_0
+
+#define LONG_PRESS_THRESHOLD 500
+typedef struct {
+    uint32_t press_time;
+	uint8_t press_state;
+} key_t;
 //******************************** Defines **********************************//
 //******************************** Declaring ********************************//
-void led_task(void *param);
+extern key_t key;
+void key_task(void *param);
 //******************************** Declaring ********************************//
 #endif

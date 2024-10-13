@@ -12,6 +12,7 @@
  * - FreeRTOS.h
  * - task.h
  * - queue.h
+ * - tim.h
  *
  * @author ShiYuan
  *
@@ -21,7 +22,7 @@
  *
  * call directly.
  *
- * @version V1.0 2024-10-10
+ * @version V1.0 2024-10-13
  *
  * @note 1 tab == 4 spaces!
  *
@@ -32,25 +33,14 @@
 #include "FreeRTOS.h"
 #include "task.h"
 #include "queue.h"
+#include "tim.h"
 
+volatile uint32_t run_times;
 QueueHandle_t led_queue;
-
-static void led_overturn()
-{
-    HAL_GPIO_TogglePin(LED_GPIO, LED_GPIO_PIN);
-}
-static void led_flash(uint32_t num)
-{
-    for(uint32_t i = 0; i < num; i++)
-    {
-        HAL_GPIO_TogglePin(LED_GPIO, LED_GPIO_PIN);
-        vTaskDelay(200);
-    }
-}
 
 void led_task(void *param)
 {
-	led_queue = xQueueCreate(1, sizeof(uint8_t));
+    led_queue = xQueueCreate(1, sizeof(uint8_t));
     uint8_t key_state = 0;
     while(1)
     {
@@ -58,11 +48,13 @@ void led_task(void *param)
         {
             if(1 == key_state)
             {
-                led_overturn();
+                run_times = 2;
+                HAL_TIM_Base_Start_IT(&htim2);
             }
             else if(2 == key_state)
             {
-                led_flash(10);
+                run_times = 20;
+                HAL_TIM_Base_Start_IT(&htim2);
             }
             key_state = 0;
         }
