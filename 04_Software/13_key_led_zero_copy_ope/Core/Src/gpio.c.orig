@@ -27,7 +27,7 @@
 #include "task.h"
 #include "queue.h"
 
-extern QueueHandle_t signal_queue;
+extern QueueHandle_t key_queue;
 /* USER CODE END 0 */
 
 /*----------------------------------------------------------------------------*/
@@ -84,25 +84,15 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
     {
         if(GPIO_PIN_RESET == HAL_GPIO_ReadPin(KEY_GPIO, KEY_GPIO_PIN))
         {
-            key.press_flag = 1;
-            key.press_start_time = HAL_GetTick();
+            (*p_key).press_start_time = HAL_GetTick();
+			(*p_key).press_state = 0;
+			xQueueSendFromISR(key_queue, &p_key, &xHigherPriorityTaskWoken);
         }
         else
         {
-            key.press_flag = 0;
-            uint32_t press_duration = HAL_GetTick() - key.press_start_time;
-            if(press_duration > LONG_PRESS_THRESHOLD)
-            {
-                key.press_state = 2;
-                xQueueSendFromISR(signal_queue, &(key.press_state), &xHigherPriorityTaskWoken);
-				key.press_state = 0;
-            }
-            else
-            {
-				key.press_state = 1;
-                xQueueSendFromISR(signal_queue, &(key.press_state), &xHigherPriorityTaskWoken);
-				key.press_state = 0;
-            }
+			(*p_key).press_start_time = HAL_GetTick();
+			(*p_key).press_state = 1;
+                xQueueSendFromISR(key_queue, &p_key, &xHigherPriorityTaskWoken);
         }
          portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
     }

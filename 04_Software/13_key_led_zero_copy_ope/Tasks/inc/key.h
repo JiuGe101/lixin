@@ -32,12 +32,12 @@
 
 #define LONG_PRESS_THRESHOLD 500
 typedef struct {
-    int8_t press_flag;
-    uint32_t press_start_time;
+    uint32_t press_time;
 	uint8_t press_state;
 } key_t;
 //******************************** Defines **********************************//
 //******************************** Declaring ********************************//
 extern key_t key;
+void key_task(void *param);
 //******************************** Declaring ********************************//
 #endif

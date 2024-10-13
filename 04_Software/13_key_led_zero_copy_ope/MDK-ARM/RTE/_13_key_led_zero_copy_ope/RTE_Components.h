@@ -3,8 +3,8 @@
  * Auto generated Run-Time-Environment Configuration File
  *      *** Do not modify ! ***
  *
- * Project: '11_key_led_irq_multi_ope' 
- * Target:  '11_key_led_irq_multi_ope' 
+ * Project: '13_key_led_zero_copy_ope' 
+ * Target:  '13_key_led_zero_copy_ope' 
  */
 
 #ifndef RTE_COMPONENTS_H

@@ -33,7 +33,7 @@
 #include "task.h"
 #include "queue.h"
 
-extern QueueHandle_t signal_queue;
+QueueHandle_t led_queue;
 
 static void led_overturn()
 {
@@ -50,10 +50,11 @@ static void led_flash(uint32_t num)
 
 void led_task(void *param)
 {
+	led_queue = xQueueCreate(1, sizeof(uint8_t));
     uint8_t key_state = 0;
     while(1)
     {
-        if(NULL != signal_queue && pdTRUE == xQueueReceive(signal_queue, &key_state, portMAX_DELAY))
+        if(NULL != led_queue && pdTRUE == xQueueReceive(led_queue, &key_state, portMAX_DELAY))
         {
             if(1 == key_state)
             {
@@ -61,7 +62,7 @@ void led_task(void *param)
             }
             else if(2 == key_state)
             {
-                led_flash(6);
+                led_flash(10);
             }
             key_state = 0;
         }
