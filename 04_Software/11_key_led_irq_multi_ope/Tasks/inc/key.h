@@ -8,7 +8,7 @@
  * @par dependencies
  * - stdint.h
  *
- * @author ʮԪ
+ * @author ShiYuan
  *
  * @brief change the status of led according to key.
  *

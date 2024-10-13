@@ -7,7 +7,7 @@
  *
  * @par dependencies
  *
- * @author ʮԪ
+ * @author ShiYaun
  *
  * @brief change the status of led according to key.
  *
