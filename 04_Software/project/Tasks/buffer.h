@@ -1,6 +1,7 @@
 #ifndef __BUFFER_H__
 #define __BUFFER_H__
 #include <stdint.h>
+#define BUFFER_SIZE 256 // 定义缓冲区大小
 typedef struct {
     uint8_t *buffer;   // 数据存储
     uint16_t head;       // 写入指针

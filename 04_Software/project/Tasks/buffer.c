@@ -2,7 +2,7 @@
 #include "FreeRTOS.h"
 #include "task.h"
 
-#define BUFFER_SIZE 10 // 定义缓冲区大小
+
 
 cir_buff_t *create_buffer()
 {
