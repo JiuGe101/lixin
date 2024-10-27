@@ -2,7 +2,8 @@
 #include "FreeRTOS.h"
 #include "task.h"
 
-#define BUFFER_SIZE 256 // 定义缓冲区大小
+#define BUFFER_SIZE 10 // 定义缓冲区大小
+
 cir_buff_t *create_buffer()
 {
 	cir_buff_t *cb = (cir_buff_t*)pvPortMalloc(sizeof(cir_buff_t));

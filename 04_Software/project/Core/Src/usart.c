@@ -120,6 +120,7 @@ void HAL_UART_MspDeInit(UART_HandleTypeDef* uartHandle)
 #include "FreeRTOS.h"
 #include "task.h"
 #include "queue.h"
+#include "buffer.h"
 uint8_t uart1_data;
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 {
@@ -129,7 +130,7 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
         LOGI("recv: %x", uart1_data);
         static uart1_recv_state_t cur_recv_state = DATA_WAIT_HEADER;
         static uint8_t count = 0;
-        static uint8_t *data_buff;
+        static cir_buff_t *data_buff;
         switch(cur_recv_state)
         {
         case DATA_WAIT_HEADER:
@@ -138,20 +139,19 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
                 LOGI("recv header");
                 count++;
                 xQueueReceiveFromISR(buff_addr_queue, &data_buff, &xHigherPriorityTaskWoken);
-                *(data_buff + count - 1) = uart1_data;
+				write_buffer(data_buff, uart1_data); 
                 cur_recv_state = DATA_WAIT_TAIL;
             }
             break;
         case DATA_WAIT_TAIL:
             count++;
-			*(data_buff + count - 1) = uart1_data;
+			write_buffer(data_buff, uart1_data);
             if(DATA_TAIL == uart1_data)
             {
                 LOGI("recv tail");
                 count = 0;
                 vTaskNotifyGiveFromISR(b_task_handle, &xHigherPriorityTaskWoken);
                 cur_recv_state = DATA_WAIT_HEADER;
-
             }
             break;
         }
