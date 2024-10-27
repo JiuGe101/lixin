@@ -90,7 +90,7 @@ void b_task(void *param)
                     LOGI("recv tail");
                     count = 0;
                     cur_recv_state = DATA_WAIT_HEADER;
-					if(data[DATA_SIZE-2] == data[1]+data[2])
+					if(data[DATA_SIZE-2] == data[1]+data[2])//checknum
 						xQueueSend(buff_print_queue, data, portMAX_DELAY);
 					else
 						LOGI("invalid");
