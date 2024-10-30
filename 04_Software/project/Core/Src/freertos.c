@@ -27,6 +27,7 @@
 /* USER CODE BEGIN Includes */
 #include <stdio.h>
 #include "user_rtt_printf.h"
+#include "unity.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -58,7 +59,8 @@ const osThreadAttr_t defaultTask_attributes = {
 
 /* Private function prototypes -----------------------------------------------*/
 /* USER CODE BEGIN FunctionPrototypes */
-void fault_test_by_div0(void);
+int fault_test_by_div0(int y);
+void test(void);
 /* USER CODE END FunctionPrototypes */
 
 void StartDefaultTask(void *argument);
@@ -116,7 +118,10 @@ void StartDefaultTask(void *argument)
 {
   /* USER CODE BEGIN StartDefaultTask */
     /* Infinite loop */
-	fault_test_by_div0();
+	//fault_test_by_div0();
+	UNITY_BEGIN();
+	RUN_TEST(test);
+	UNITY_END();
     for(;;)
     {
         osDelay(1);
@@ -126,17 +131,22 @@ void StartDefaultTask(void *argument)
 
 /* Private application code --------------------------------------------------*/
 /* USER CODE BEGIN Application */
-void fault_test_by_div0(void) {
-    volatile int * SCB_CCR = (volatile int *) 0xE000ED14; // SCB->CCR
-    int x, y, z;
+int fault_test_by_div0(int y) {
+    //volatile int * SCB_CCR = (volatile int *) 0xE000ED14; // SCB->CCR
+    int x, z;
 
-    *SCB_CCR |= (1 << 4); /* bit4: DIV_0_TRP. */
-
+    //*SCB_CCR |= (1 << 4); /* bit4: DIV_0_TRP. */
+	if(0==y)
+		return -1;
     x = 10;
-    y = 0;
     z = x / y;
-	//vTaskDelay(1000);
     LOGI("z:%d\n", z);
+	return z;
+}
+void test()
+{
+	TEST_ASSERT_EQUAL_INT(-1,fault_test_by_div0(1));
+	TEST_ASSERT_EQUAL_INT(5,fault_test_by_div0(2));
 }
 /* USER CODE END Application */
 
