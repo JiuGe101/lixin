@@ -22,10 +22,10 @@
 #include "task.h"
 #include "main.h"
 #include "cmsis_os.h"
-
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "user_rtt_printf.h"
+#include "aes.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -115,6 +115,11 @@ void StartDefaultTask(void *argument)
 {
     /* USER CODE BEGIN StartDefaultTask */
     /* Infinite loop */
+	char *password_data = "11aa22bb33cc";
+	char key[17] = "JGp7Nu9oSO_tgK5w";
+	char iv[17] = "test--aes--smart";
+	char *password = encrypt(password_data, key, iv);
+	LOGI("password: %s", password);
     for(;;)
     {
         osDelay(1);
