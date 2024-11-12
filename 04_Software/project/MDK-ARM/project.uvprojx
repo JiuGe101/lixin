@@ -340,7 +340,7 @@
               <MiscControls></MiscControls>
               <Define>USE_HAL_DRIVER,STM32F411xE</Define>
               <Undefine></Undefine>
-              <IncludePath>../Core/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy;../Middlewares/Third_Party/FreeRTOS/Source/include;../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2;../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F;../Drivers/CMSIS/Device/ST/STM32F4xx/Include;../Drivers/CMSIS/Include;..\Middlewares\RTT\Config;..\Middlewares\RTT\RTT;..\Middlewares\easylogger\inc</IncludePath>
+              <IncludePath>../Core/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy;../Middlewares/Third_Party/FreeRTOS/Source/include;../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2;../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F;../Drivers/CMSIS/Device/ST/STM32F4xx/Include;../Drivers/CMSIS/Include;..\Middlewares\RTT\Config;..\Middlewares\RTT\RTT;..\Middlewares\easylogger\inc;..\BSP\aht21\inc</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -608,6 +608,16 @@
               <FileName>elog_port.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Middlewares\easylogger\port\elog_port.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>BSP</GroupName>
+          <Files>
+            <File>
+              <FileName>ec_bsp_aht21_driver.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\BSP\aht21\src\ec_bsp_aht21_driver.c</FilePath>
             </File>
           </Files>
         </Group>

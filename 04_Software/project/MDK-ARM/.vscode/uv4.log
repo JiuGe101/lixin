@@ -1,0 +1,11 @@
+*** Using Compiler 'V5.06 update 7 (build 960)', folder: 'D:\Keil5\ARM\ARM_Compiler_5.06u7\Bin'
+Build target 'project'
+compiling ec_bsp_aht21_driver.c...
+..\BSP\aht21\inc\ec_bsp_aht21_reg.h(5): warning:  #1-D: last line of file ends without a newline
+  #endif //end of __EC_BSP_AHT21_REG_H__
+..\BSP\aht21\inc\ec_bsp_aht21_driver.h(23): error:  #40: expected an identifier
+      AHT21_RESERVED,         = 0x7FFFFFFF
+..\BSP\aht21\src\ec_bsp_aht21_driver.c: 1 warning, 1 error
+"project\project.axf" - 1 Error(s), 1 Warning(s).
+Target not created.
+Build Time Elapsed:  00:00:00
