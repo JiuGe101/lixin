@@ -314,7 +314,7 @@
           </ArmAdsMisc>
           <Cads>
             <interw>1</interw>
-            <Optim>4</Optim>
+            <Optim>1</Optim>
             <oTime>0</oTime>
             <SplitLS>0</SplitLS>
             <OneElfS>1</OneElfS>
@@ -340,7 +340,7 @@
               <MiscControls></MiscControls>
               <Define>USE_HAL_DRIVER,STM32F411xE</Define>
               <Undefine></Undefine>
-              <IncludePath>../Core/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy;../Middlewares/Third_Party/FreeRTOS/Source/include;../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2;../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F;../Drivers/CMSIS/Device/ST/STM32F4xx/Include;../Drivers/CMSIS/Include;..\Middlewares\RTT\Config;..\Middlewares\RTT\RTT;..\Middlewares\easylogger\inc;..\BSP\aht21\inc</IncludePath>
+              <IncludePath>../Core/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy;../Middlewares/Third_Party/FreeRTOS/Source/include;../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2;../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F;../Drivers/CMSIS/Device/ST/STM32F4xx/Include;../Drivers/CMSIS/Include;..\Middlewares\RTT\Config;..\Middlewares\RTT\RTT;..\Middlewares\easylogger\inc;..\BSP\aht21\inc;..\BSP\iic;..\BSP\delay</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -618,6 +618,26 @@
               <FileName>ec_bsp_aht21_driver.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\BSP\aht21\src\ec_bsp_aht21_driver.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>IIC</GroupName>
+          <Files>
+            <File>
+              <FileName>iic_hal.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\BSP\iic\iic_hal.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>delay</GroupName>
+          <Files>
+            <File>
+              <FileName>delay.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\BSP\delay\delay.c</FilePath>
             </File>
           </Files>
         </Group>

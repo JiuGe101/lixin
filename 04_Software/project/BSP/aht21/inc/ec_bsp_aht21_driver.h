@@ -35,6 +35,7 @@
 
 /********************************** Defines **********************************/
 #define OS_SUPPORTING
+
 //#define HARDWARE_IIC
 /*    Return values from function    */
 typedef enum 
@@ -62,13 +63,13 @@ typedef struct
     aht21_status_t (*pf_iic_wait_ack)   (void *);   /* IIC wait ack interface*/
     aht21_status_t (*pf_iic_send_ack)   (void *);   /* IIC send ack interface*/
     aht21_status_t (*pf_iic_send_no_ack)(void *);   /* send no-ack interface */
-    aht21_status_t (*pf_iic_read_byte)  (void *,    /* read byte interface   */
+    aht21_status_t (*pf_iic_recv_byte)  (void *,    /* read byte interface   */
                                          uint8_t * const);
-    aht21_status_t (*pf_iic_write_byte) (void *,    /* write byte interface  */
+    aht21_status_t (*pf_iic_send_byte) (void *,    /* write byte interface  */
                                          const uint8_t);
 
-    aht21_status_t (*pf_critical_enter) (void *);   /* enter critical section*/
-    aht21_status_t (*pf_critical_exit)  (void *);   /* exit critical section */
+    aht21_status_t (*pf_critical_enter) (void);   /* enter critical section*/
+    aht21_status_t (*pf_critical_exit)  (void);   /* exit critical section */
 }iic_driver_interface_t;
 #endif /* end of HARDWARE_I2C */
 
@@ -76,11 +77,11 @@ typedef struct
 typedef struct {
     aht21_status_t (*pf_iic_init)       (void *);   /* IIC init interface    */
     aht21_status_t (*pf_iic_deinit)     (void *);   /* IIC deinit interface  */
-    aht21_status_t (*pf_iic_start)      (void *);   /* IIC start interface   */
-    aht21_status_t (*pf_iic_stop)       (void *);   /* IIC stop interface    */
-    aht21_status_t (*pf_iic_wait_ack)   (void *);   /* IIC wait ack interface*/
-    aht21_status_t (*pf_iic_send_ack)   (void *);   /* IIC send ack interface*/
-    aht21_status_t (*pf_iic_send_no_ack)(void *);   /* send no-ack interface */
+    //aht21_status_t (*pf_iic_start)      (void *);   /* IIC start interface   */
+    //aht21_status_t (*pf_iic_stop)       (void *);   /* IIC stop interface    */
+    //aht21_status_t (*pf_iic_wait_ack)   (void *);   /* IIC wait ack interface*/
+    //aht21_status_t (*pf_iic_send_ack)   (void *);   /* IIC send ack interface*/
+    //aht21_status_t (*pf_iic_send_no_ack)(void *);   /* send no-ack interface */
     aht21_status_t (*pf_iic_read_byte)  (void *);   /* read byte interface   */
     aht21_status_t (*pf_iic_write_byte) (void *);   /* write byte interface  */
 
@@ -106,29 +107,33 @@ typedef struct
 /* AHT21_hal_driver instance class */
 typedef struct
 {
-    iic_driver_interface_t  *piic_driver_instance;   /* IIC Driver Interface */
-    timebase_interface_t      *ptimebase_instance;   /* Timebase Interface   */
-    yield_interface_t            *pyield_instance;   /* Yield Interface      */
-
-    uint8_t (*pfinst)(void                   * const      p_aht21_instance,
-                      iic_driver_interface_t * const p_iic_driver_instance,
-                      timebase_interface_t   * const   p_timebase_instance,
-                      yield_interface_t      * const      p_yield_instance);
-    uint8_t (*pf_inst)                 (void * const);
-    uint8_t (*pf_deinst)               (void * const);
-    uint8_t (*pf_read_id)              (void * const);
-    uint8_t (*pf_read_temp)            (void * const, float * const     temp);
-    uint8_t (*pf_read_humidity)        (void * const, float * const humidity);
-    uint8_t (*pf_sleep)                (void * const);
-    uint8_t (*pf_wakeup)               (void * const);
+    iic_driver_interface_t *p_iic_driver_instance;   /* IIC Driver Interface */
+    timebase_interface_t     *p_timebase_instance;   /* Timebase Interface   */
+#ifdef OS_SUPPORTING
+    yield_interface_t           *p_yield_instance;   /* Yield Interface      */
+#endif /* end of OS_SUPPORTING */
+    aht21_status_t (*pf_inst)(void              * const       p_aht21_instance,
+                       iic_driver_interface_t   * const  p_iic_driver_instance,
+                       timebase_interface_t     * const    p_timebase_instance,
+                       yield_interface_t        * const      p_yield_instance);
+    aht21_status_t (*pf_init)            (void  * const);
+    aht21_status_t (*pf_deinit)          (void  * const);
+    aht21_status_t (*pf_read_id)         (void  * const);
+    aht21_status_t (*pf_read_temp_humi)  (void  * const,
+                                          float * const temperature,
+                                          float * const humidity);
+    aht21_status_t (*pf_sleep)           (void  * const);
+    aht21_status_t (*pf_wakeup)          (void  * const);
 }bsp_aht21_driver_t;
 
 /* AHT21_hal_driver instance class inst */
-uint8_t (*pfinst)(bsp_aht21_driver_t         * const      p_aht21_instance,
-                      iic_driver_interface_t * const p_iic_driver_instance,
-                      timebase_interface_t   * const   p_timebase_instance,
+extern aht21_status_t aht21_inst(
+                          bsp_aht21_driver_t     * const      p_aht21_instance,
+                          iic_driver_interface_t * const p_iic_driver_instance,
+                          timebase_interface_t   * const   p_timebase_instance,
 #ifdef OS_SUPPORTING
-                      yield_interface_t      * const      p_yield_instance);
+                          yield_interface_t      * const      p_yield_instance	  
 #endif /* end of OS_SUPPORTING */
+				               );
 /********************************** Declaring ********************************/
 #endif  // end of __EC_BSP_AHT21_DRIVER_H__
