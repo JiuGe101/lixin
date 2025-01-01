@@ -25,7 +25,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "rtt_log.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -57,7 +57,72 @@ const osThreadAttr_t defaultTask_attributes = {
 
 /* Private function prototypes -----------------------------------------------*/
 /* USER CODE BEGIN FunctionPrototypes */
+__attribute__ ((used, section ("myflash")))
+void flash_function_pre()
+{
+	int i = 0;
+	i = i / 3;
+	return ;
+}
+void flash_function()
+{
+	int i = 0;
+	i = i / 3;
+	return;
+}
 
+__attribute__ ((used, section ("myram")))
+void sram_function_pre()
+{
+	int i = 0;
+	i = i / 3;
+	return;
+}
+__attribute__ ((used, section ("myram"))) 
+void sram_function(void)
+{
+	int i = 0;
+	i = i / 3;
+	return;
+}
+uint32_t call_flash_func_time_record(void)
+{
+	uint32_t start_tick = HAL_GetTick();
+	uint32_t end_tick = 0;
+	uint32_t i_counter = 10000000;
+	void (* volatile fpointer_1)(void) = flash_function;
+	void (* volatile fpointer_2)(void) = flash_function_pre;
+	
+	while( i_counter > 0 )
+	{
+		fpointer_1();
+		fpointer_2();
+		i_counter --;
+	}
+	
+	end_tick = HAL_GetTick();
+	
+	return (end_tick - start_tick);
+}
+uint32_t call_sram_func_time_record(void)
+{
+	uint32_t start_tick = HAL_GetTick();
+	uint32_t end_tick = 0;
+	uint32_t i_counter = 10000000;
+	void (* volatile fpointer_1)(void) = sram_function;
+	void (* volatile fpointer_2)(void) = sram_function_pre;
+	
+	while( i_counter > 0 )
+	{
+		fpointer_1();
+		fpointer_2();
+		i_counter --;
+	}
+	
+	end_tick = HAL_GetTick();
+	
+	return (end_tick - start_tick);
+}
 /* USER CODE END FunctionPrototypes */
 
 void StartDefaultTask(void *argument);
@@ -117,7 +182,9 @@ void StartDefaultTask(void *argument)
     /* Infinite loop */
     for(;;)
     {
-        osDelay(1);
+		LOGI("flash_function execute time = [%d]ms \r\n",call_flash_func_time_record());
+		LOGI("sram_function execute time = [%d]ms \r\n",call_sram_func_time_record());
+        osDelay(1000);
     }
     /* USER CODE END StartDefaultTask */
 }
