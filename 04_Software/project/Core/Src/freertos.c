@@ -57,7 +57,7 @@ const osThreadAttr_t defaultTask_attributes = {
 
 /* Private function prototypes -----------------------------------------------*/
 /* USER CODE BEGIN FunctionPrototypes */
-
+void test();
 /* USER CODE END FunctionPrototypes */
 
 void StartDefaultTask(void *argument);
@@ -115,6 +115,8 @@ void StartDefaultTask(void *argument)
 {
     /* USER CODE BEGIN StartDefaultTask */
     /* Infinite loop */
+	char data[] = {"Hello"};
+	test();
     for(;;)
     {
         osDelay(1);
@@ -124,6 +126,11 @@ void StartDefaultTask(void *argument)
 
 /* Private application code --------------------------------------------------*/
 /* USER CODE BEGIN Application */
-
+void test()
+{
+	uint32_t *a = (uint32_t*)0xFFFFFFFF;
+	int c = 0;
+	int b = *a / c;
+}
 /* USER CODE END Application */
 
