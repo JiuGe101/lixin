@@ -43,7 +43,7 @@ typedef enum
     AHT21_OK                = 0,    /*  */
     AHT21_ERROR,        
     AHT21_ERRORTIMEOUT,
-    AHT21_ERRORREOURCE,
+    AHT21_ERRORRESOURCE,
     AHT21_ERRORPARAMETER,
     AHT21_ERRORNOMEMORY,
     AHT21_ERRORISR,
@@ -116,24 +116,25 @@ typedef struct
                        iic_driver_interface_t   * const  p_iic_driver_instance,
                        timebase_interface_t     * const    p_timebase_instance,
                        yield_interface_t        * const      p_yield_instance);
-    aht21_status_t (*pf_init)            (void  * const);
-    aht21_status_t (*pf_deinit)          (void  * const);
-    aht21_status_t (*pf_read_id)         (void  * const);
-    aht21_status_t (*pf_read_temp_humi)  (void  * const,
-                                          float * const temperature,
-                                          float * const humidity);
-    aht21_status_t (*pf_sleep)           (void  * const);
-    aht21_status_t (*pf_wakeup)          (void  * const);
+    aht21_status_t (*pf_init)            (void  * const      p_aht21_instance);
+    aht21_status_t (*pf_deinit)          (void  * const      p_aht21_instance);
+    aht21_status_t (*pf_read_id)         (void  * const      p_aht21_instance);
+    aht21_status_t (*pf_read_temp_humi)  (void  * const      p_aht21_instance,
+                                          float * const           temperature,
+                                          float * const              humidity);
+	aht21_status_t (*pf_read_humi)       (void  * const      p_aht21_instance,
+										  float * const              humidity);
+    aht21_status_t (*pf_sleep)           (void  * const      p_aht21_instance);
+    aht21_status_t (*pf_wakeup)          (void  * const      p_aht21_instance);
 }bsp_aht21_driver_t;
 
 /* AHT21_hal_driver instance class inst */
 extern aht21_status_t aht21_inst(
                           bsp_aht21_driver_t     * const      p_aht21_instance,
                           iic_driver_interface_t * const p_iic_driver_instance,
-                          timebase_interface_t   * const   p_timebase_instance,
 #ifdef OS_SUPPORTING
-                          yield_interface_t      * const      p_yield_instance	  
+                          yield_interface_t      * const      p_yield_instance,							  
 #endif /* end of OS_SUPPORTING */
-				               );
+						  timebase_interface_t   * const  p_timebase_instance);
 /********************************** Declaring ********************************/
 #endif  // end of __EC_BSP_AHT21_DRIVER_H__

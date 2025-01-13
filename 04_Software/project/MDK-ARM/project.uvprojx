@@ -619,6 +619,11 @@
               <FileType>1</FileType>
               <FilePath>..\BSP\aht21\src\ec_bsp_aht21_driver.c</FilePath>
             </File>
+            <File>
+              <FileName>ec_bsp_temp_humi_xxx_handler.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\BSP\aht21\src\ec_bsp_temp_humi_xxx_handler.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

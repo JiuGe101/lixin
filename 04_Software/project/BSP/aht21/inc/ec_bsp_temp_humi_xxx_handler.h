@@ -43,12 +43,12 @@ typedef enum
 {
     TEMP_HUMI_OK               = 0,      /* Operation completed successfully */
     TEMP_HUMI_ERROR,                     /* Operation failed                 */
-    TEMP_HUMI_ERROR_TIMEOUT,             /* Operation timed out              */
-    TEMP_HUMI_ERROR_RESOURCE,            /* Resource unavailable             */
-    TEMP_HUMI_ERROR_PARAMETER,           /* Parameter error                  */
-    TEMP_HUMI_ERROR_NOMEMORY,            /* No memory available              */
-    TEMP_HUMI_ERROR_ISR,                 /*  Not allowed in ISR context      */
-    TEMP_HUMI_RESWEVED      = 0x7FFFFFFF /* Reserved for future use          */
+    TEMP_HUMI_ERRORTIMEOUT,              /* Operation timed out              */
+    TEMP_HUMI_ERRORRESOURCE,             /* Resource unavailable             */
+    TEMP_HUMI_ERRORPARAMETER,            /* Parameter error                  */
+    TEMP_HUMI_ERRORNOMEMORY,             /* No memory available              */
+    TEMP_HUMI_ERRORISR,                  /*  Not allowed in ISR context      */
+    TEMP_HUMI_RESERVED      = 0x7FFFFFFF /* Reserved for future use          */
 }temp_humi_status_t;
 
 typedef enum
@@ -63,9 +63,10 @@ typedef struct
 {
     float                   *temperature;   /* Temperature                   */
     float                      *humidity;   /* Humidity                      */
-    uint32_t                    lifttime;   /* Lifetime of data              */
+    uint32_t                    lifetime;   /* Lifetime of data              */
     uint32_t                   timestamp;   /* Timestamp of event            */
     temp_humi_xxx_event_data_type_t type;   /* Type of event                 */
+    void (*pf_callback)(float *temp, float *humi);/* Callback func */ 
 }temp_humi_xxx_event_t;
 /********************************** Typedefs *********************************/
 
@@ -86,7 +87,7 @@ typedef struct
                                          void *queue_handle,
                                          void *msg,
                                          uint32_t timeout);
-}temp_humi_handle_os_interface_t;
+}temp_humi_handler_os_interface_t;
 
 typedef struct
 {
@@ -148,13 +149,14 @@ void temp_humi_handler_thread(void *argument);
  */
 temp_humi_status_t bsp_temp_humi_xxx_handler_inst(
     bsp_temp_humi_xxx_handler_t       *handler_instance,
-    temp_humo_handler_all_input_arg_t *       input_arg);
+    temp_humi_handler_all_input_arg_t *       input_arg);
 
 /**
  * @brief Reads the temperature and humidity from the AHT21 sensor.
  * 
  * This function sends an event to the AHT21 to read the temperature and
- * humidity. When the temperature and humidity data is ready, the callback function or provided pointers for temp.
+ * humidity. When the temperature and humidity data is ready, the callback function or 
+ * provided pointers for temp.
  * 
  * @param[in] event A pointer to the event made by the caller
  * 
