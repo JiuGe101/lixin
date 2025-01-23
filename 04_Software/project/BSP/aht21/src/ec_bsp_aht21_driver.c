@@ -59,6 +59,10 @@ static uint8_t check_crc8(const uint8_t *p_data, const uint8_t lenght)
  */
 static aht21_status_t __read_id(bsp_aht21_driver_t *const p_aht21_instance)
 {
+	if(NULL == p_aht21_instance)
+	{
+		return AHT21_ERRORRESOURCE;
+	}
     uint8_t data = 0;
 #ifndef HARDWARE_IIC
     p_aht21_instance->p_iic_driver_instance->pf_critical_enter();
@@ -112,6 +116,10 @@ static aht21_status_t aht21_read_id(bsp_aht21_driver_t * const p_aht21_instance)
  */
 static aht21_status_t aht21_init(bsp_aht21_driver_t * const p_aht21_instance)
 {
+	if(NULL == p_aht21_instance)
+	{
+		return AHT21_ERRORRESOURCE;
+	}
     aht21_status_t ret = AHT21_OK;
     log_d("aht21_init start");
     p_aht21_instance->p_yield_instance->pf_rtos_yield(300);
@@ -163,6 +171,10 @@ static aht21_status_t aht21_deinit(bsp_aht21_driver_t * const p_aht21_instance)
  */
 static uint8_t aht21_read_status(bsp_aht21_driver_t * const p_aht21_instance)
 {
+	if(NULL == p_aht21_instance)
+	{
+		return AHT21_ERRORRESOURCE;
+	}
     if(!IS_INITED)
     {
         return AHT21_ERRORRESOURCE;
@@ -205,6 +217,14 @@ static aht21_status_t aht21_read_temp_humi(bsp_aht21_driver_t * const p_aht21_in
         float * const temp,
         float * const humi)
 {
+	if(NULL == p_aht21_instance)
+	{
+		return AHT21_ERRORRESOURCE;
+	}
+	if(NULL == temp || NULL == humi)
+	{
+		return AHT21_ERRORRESOURCE;
+	}
     if(!IS_INITED)
     {
         return AHT21_ERRORRESOURCE;

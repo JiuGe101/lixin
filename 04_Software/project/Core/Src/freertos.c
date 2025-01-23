@@ -297,7 +297,7 @@ void test_task(void *param)
     {
         log_d("Task start");
 		vTaskDelay(1000);
-        bsp_temp_humi_xxx_read(&event);
+        bsp_temp_humi_xxx_read(NULL);
     }
 }
 /* USER CODE END Application */

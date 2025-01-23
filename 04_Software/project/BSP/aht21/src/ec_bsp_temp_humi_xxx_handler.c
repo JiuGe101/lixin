@@ -27,6 +27,7 @@
 /********************************** Includes *********************************/
 #include "ec_bsp_temp_humi_xxx_handler.h"
 #include "elog.h"
+#include "unity.h"
 /********************************** Includes *********************************/
 /********************************** Defines **********************************/
 #define TEMP_HUMI_NOT_INITIATED false                       /* Not initiated */
@@ -48,7 +49,7 @@ typedef struct temp_humi_handler_private_data
  *
  * @param[in] instance Pointer to the handler instance to mount.
  */
-void __mount_handler(bsp_temp_humi_xxx_handler_t *instance)
+void __mount_handler(bsp_temp_humi_xxx_handler_t * const instance)
 {
     gp_temp_humi_instance = instance;
 }
@@ -124,7 +125,7 @@ static temp_humi_status_t bsp_temp_xxx_handler_deinit(void)
  */
 temp_humi_status_t bsp_temp_humi_xxx_handler_inst(
     bsp_temp_humi_xxx_handler_t       *handler_instance,
-    temp_humi_handler_all_input_arg_t *       input_arg)
+    temp_humi_handler_all_input_arg_t * const input_arg)
 {
     log_d("bsp_temp_humi_xxx_handler_inst start");
     if(NULL == handler_instance)
@@ -182,9 +183,9 @@ temp_humi_status_t bsp_temp_humi_xxx_handler_inst(
  */
 temp_humi_status_t get_temp_humi(
     bsp_temp_humi_xxx_handler_t *handler_instance,
-    temp_humi_xxx_event_t *event,
-    float *temperature,
-    float *humidity)
+    temp_humi_xxx_event_t * const event,
+    float * const temperature,
+    float * const humidity)
 {
     log_d("get_temp_humi start");
 	if(NULL == handler_instance)
@@ -199,7 +200,7 @@ temp_humi_status_t get_temp_humi(
 	{
 		return TEMP_HUMI_ERRORRESOURCE;
 	}
-    uint32_t tim = handler_instance->timebase_interface->pf_get_tick_count();
+    const uint32_t tim = handler_instance->timebase_interface->pf_get_tick_count();
     switch (event->type)
     {
         case TEMP_HUMI_EVENT_TEMP:
@@ -250,7 +251,7 @@ temp_humi_status_t get_temp_humi(
  *
  * @param[in] argument Pointer to input arguments (input_arg).
  */
-void temp_humi_handler_thread(void *argument)
+void temp_humi_handler_thread(void * const argument)
 {
     log_d("temp_humi_handler_thread start");
     float temp = 0;
@@ -304,6 +305,7 @@ void temp_humi_handler_thread(void *argument)
  */
 temp_humi_status_t bsp_temp_humi_xxx_read(temp_humi_xxx_event_t *event)
 {
+	TEST_ASSERT_MESSAGE(event, "The event is NULL!");
     log_d("temp_humi_xxx_read start");
     temp_humi_status_t ret = TEMP_HUMI_OK;
 	if(NULL == event)

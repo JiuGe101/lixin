@@ -36,7 +36,7 @@
 /********************************** Defines **********************************/
 #define OS_SUPPORTING
 
-//#define HARDWARE_IIC
+/*#define HARDWARE_IIC*/
 /*    Return values from function    */
 typedef enum 
 {
