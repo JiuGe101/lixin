@@ -26,7 +26,7 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "elog.h"
-#include "SEGGER_RTT.h"
+#include "SEGGER_SYSVIEW.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -70,7 +70,7 @@ int main(void)
 {
 
     /* USER CODE BEGIN 1 */
-    SEGGER_RTT_Init();
+	SEGGER_SYSVIEW_Conf();
     /* close printf buffer */
     //setbuf(stdout, NULL);
     /* initialize EasyLogger */
