@@ -25,6 +25,7 @@
 /* USER CODE BEGIN Includes */
 #include "SEGGER_RTT.h"
 #include "elog.h"
+#include "stdint.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -45,14 +46,44 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-
+extern int Load$$RW_IRAM1$$Base;
+extern int Load$$RW_IRAM1$$Limit;
+extern int Image$$RW_IRAM1$$Base;
+extern int Image$$RW_IRAM1$$Limit;
+extern int Image$$RW_IRAM1$$RW$$Base;
+extern int Image$$RW_IRAM1$$RW$$Limit;
+extern int Image$$RW_IRAM1$$ZI$$Base;
+extern int Image$$RW_IRAM1$$ZI$$Limit;
+uint8_t g_value = 12;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 void MX_FREERTOS_Init(void);
 /* USER CODE BEGIN PFP */
+void copy_memory(uint32_t source, uint32_t destination, uint32_t size)
+{
+	uint32_t *src_ptr = (uint32_t*)source;
+	uint32_t *dest_ptr = (uint32_t*)destination;
+	uint32_t *end_ptr = (uint32_t*)(source + size);
+	while(src_ptr < end_ptr)
+	{
+		*dest_ptr = *src_ptr;
+		dest_ptr++;
+		src_ptr++;
+	}
+}
 
+void zero_initialize(uint32_t start_addr, uint32_t size)
+{
+	uint8_t *current_ptr = (uint8_t*)start_addr;
+	uint8_t *end_ptr = (uint8_t*)(start_addr + size - 16);
+	while(current_ptr < end_ptr)
+	{
+		*current_ptr = 0;
+		current_ptr++;
+	}
+}
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -68,7 +99,10 @@ int main(void)
 {
 
     /* USER CODE BEGIN 1 */
-
+//	copy_memory((uint32_t)&Load$$RW_IRAM1$$Base, 
+//				(uint32_t)&Image$$RW_IRAM1$$Base, 
+//				&Load$$RW_IRAM1$$Limit - &Load$$RW_IRAM1$$Base);
+	//zero_initialize((uint32_t)&Image$$RW_IRAM1$$ZI$$Base, &Image$$RW_IRAM1$$ZI$$Limit - &Image$$RW_IRAM1$$ZI$$Base);
     /* USER CODE END 1 */
 
     /* MCU Configuration--------------------------------------------------------*/
@@ -107,18 +141,27 @@ int main(void)
     /* USER CODE END 2 */
 
     /* Init scheduler */
-    osKernelInitialize();
+    //osKernelInitialize();
 
     /* Call init function for freertos objects (in cmsis_os2.c) */
-    MX_FREERTOS_Init();
+    //MX_FREERTOS_Init();
 
     /* Start scheduler */
-    osKernelStart();
+    //osKernelStart();
 
     /* We should never get here as control is now taken by the scheduler */
 
     /* Infinite loop */
     /* USER CODE BEGIN WHILE */
+	log_i("g_value: %d", g_value);
+	log_i("Load$$RW_IRAM1$$Base: %#x", (uint32_t)&Load$$RW_IRAM1$$Base);
+	log_i("Load$$RW_IRAM1$$Limit: %#x", (uint32_t)&Load$$RW_IRAM1$$Limit);
+	log_i("Image$$RW_IRAM1$$Base: %#x", (uint32_t)&Image$$RW_IRAM1$$Base);
+	log_i("Image$$RW_IRAM1$$Limit: %#x", (uint32_t)&Image$$RW_IRAM1$$Limit);
+	log_i("Image$$RW_IRAM1$$RW$$Base: %#x", (uint32_t)&Image$$RW_IRAM1$$RW$$Base);
+	log_i("Image$$RW_IRAM1$$RW$$Limit: %#x", (uint32_t)&Image$$RW_IRAM1$$RW$$Limit);
+	log_i("Image$$RW_IRAM1$$ZI$$Base: %#x", (uint32_t)&Image$$RW_IRAM1$$ZI$$Base);
+	log_i("Image$$RW_IRAM1$$ZI$$Limit: %#x", (uint32_t)&Image$$RW_IRAM1$$ZI$$Limit);
     while (1)
     {
         /* USER CODE END WHILE */
