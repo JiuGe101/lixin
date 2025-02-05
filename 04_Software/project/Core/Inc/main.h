@@ -59,7 +59,7 @@ void Error_Handler(void);
 /* Private defines -----------------------------------------------------------*/
 
 /* USER CODE BEGIN Private defines */
-
+#define WATCH_ADDRESS (volatile uint32_t*)0x20002008
 /* USER CODE END Private defines */
 
 #ifdef __cplusplus

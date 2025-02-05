@@ -22,6 +22,7 @@
 #include "stm32f4xx_it.h"
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include "rtt_log.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -100,7 +101,13 @@ void HardFault_Handler(void)
 void MemManage_Handler(void)
 {
   /* USER CODE BEGIN MemoryManagement_IRQn 0 */
-
+	uint32_t cfsr = SCB->CFSR;
+	LOGE("CFSR: %#x", cfsr);
+	if(cfsr & (1 << 7))
+	{
+		uint32_t fault_address = SCB->MMFAR;
+		LOGE("Fault Address: %#x", fault_address);
+	}		
   /* USER CODE END MemoryManagement_IRQn 0 */
   while (1)
   {
