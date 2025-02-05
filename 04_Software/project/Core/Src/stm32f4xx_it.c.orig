@@ -23,7 +23,6 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "rtt_log.h"
-#include "stdio.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -75,9 +74,9 @@ void NMI_Handler(void)
 
   /* USER CODE END NonMaskableInt_IRQn 0 */
   /* USER CODE BEGIN NonMaskableInt_IRQn 1 */
-    while (1)
-    {
-    }
+   while (1)
+  {
+  }
   /* USER CODE END NonMaskableInt_IRQn 1 */
 }
 
@@ -87,7 +86,7 @@ void NMI_Handler(void)
 void HardFault_Handler(void)
 {
   /* USER CODE BEGIN HardFault_IRQn 0 */
-	printf("HardFault_Handler");
+
   /* USER CODE END HardFault_IRQn 0 */
   while (1)
   {
@@ -102,13 +101,13 @@ void HardFault_Handler(void)
 void MemManage_Handler(void)
 {
   /* USER CODE BEGIN MemoryManagement_IRQn 0 */
-    uint32_t cfsr = SCB->CFSR;
-    LOGE("CFSR: %#x", cfsr);
-    if(cfsr & (1 << 7))
-    {
-        uint32_t fault_address = SCB->MMFAR;
-        LOGE("Fault Address: %#x", fault_address);
-    }
+	uint32_t cfsr = SCB->CFSR;
+	LOGE("CFSR: %#x", cfsr);
+	if(cfsr & (1 << 7))
+	{
+		uint32_t fault_address = SCB->MMFAR;
+		LOGE("Fault Address: %#x", fault_address);
+	}		
   /* USER CODE END MemoryManagement_IRQn 0 */
   while (1)
   {
@@ -153,16 +152,16 @@ void UsageFault_Handler(void)
 void DebugMon_Handler(void)
 {
   /* USER CODE BEGIN DebugMonitor_IRQn 0 */
-    if(DWT->FUNCTION0 & DWT_FUNCTION_MATCHED_Msk) {
-        uint32_t cmp_addr = DWT->COMP0;
-        while(1) {
-            for(volatile uint32_t i = 0; i < 3000; i++) {
-                for(volatile uint32_t j = 0; j < 3000; j++) {
-                }
-            }
-            printf("Address [0x%x] watchpoint triger!\r\n", cmp_addr);
+	if(DWT->FUNCTION0 & DWT_FUNCTION_MATCHED_Msk) {
+    uint32_t cmp_addr = DWT->COMP0;
+    while(1) {
+      for(volatile uint32_t i = 0; i < 3000; i++) {
+        for(volatile uint32_t j = 0; j < 3000; j++) {
         }
+      }
+      LOGE("Address [0x%x] watchpoint triger!\r\n", cmp_addr);
     }
+  }
   /* USER CODE END DebugMonitor_IRQn 0 */
   /* USER CODE BEGIN DebugMonitor_IRQn 1 */
 
