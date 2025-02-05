@@ -116,10 +116,16 @@ void StartDefaultTask(void *argument)
     /* USER CODE BEGIN StartDefaultTask */
     /* Infinite loop */
 	log_i("Default Task");
-	*WATCH_ADDRESS = 0x5678;
+	int a = 10;
+	int b = 5;
+	int c = a / b;
+	// __BKPT(1);
+	// *WATCH_ADDRESS = 0x5678;
     for(;;)
     {
-        osDelay(1);
+		__BKPT(1);
+		log_i("Hello");
+        osDelay(100);
     }
     /* USER CODE END StartDefaultTask */
 }
