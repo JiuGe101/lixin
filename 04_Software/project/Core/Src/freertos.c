@@ -26,7 +26,9 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "elog.h"
+#include "rtt_log.h"
 #include "stdio.h"
+#include "fpb.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -58,7 +60,8 @@ const osThreadAttr_t defaultTask_attributes = {
 
 /* Private function prototypes -----------------------------------------------*/
 /* USER CODE BEGIN FunctionPrototypes */
-
+void set_breakpoint(uint32_t address);
+void test_function();
 /* USER CODE END FunctionPrototypes */
 
 void StartDefaultTask(void *argument);
@@ -116,16 +119,18 @@ void StartDefaultTask(void *argument)
 {
   /* USER CODE BEGIN StartDefaultTask */
     /* Infinite loop */
-	printf("Default Task\r\n");
-	//log_i("Default Task");
-	printf("Default Task1\r\n");
-	int a = 10;
-	int b = 5;
-	int c = a / b;
-	debug_var = 1;
-	printf("Default Task2\r\n");
+//	printf("Default Task\r\n");
+//	//log_i("Default Task");
+//	printf("Default Task1\r\n");
+//	int a = 10;
+//	int b = 5;
+//	int c = a / b;
+//	debug_var = 1;
+//	printf("Default Task2\r\n");
 	// __BKPT(1);
 	// *WATCH_ADDRESS = 0x5678;
+	set_breakpoint((uint32_t)test_function);
+	test_function();
     for(;;)
     {
 		// __BKPT(1);
@@ -137,6 +142,24 @@ void StartDefaultTask(void *argument)
 
 /* Private application code --------------------------------------------------*/
 /* USER CODE BEGIN Application */
-
+void set_breakpoint(uint32_t address)
+{
+  CoreDebug->DEMCR |= CoreDebug_DEMCR_TRCENA_Msk;  // enable tracing
+  CoreDebug->DEMCR |= CoreDebug_DEMCR_MON_EN_Msk;  // enable debug interrupt
+  
+  uint8_t res = (FPB->CTRL & FPB_CTRL_NUM_CODE1_Msk) >> FPB_CTRL_NUM_CODE1_Pos;
+  assert_param(res);  // the num of comparators
+  
+  FPB->CTRL = FPB_CTRL_KEY_Msk | FPB_CTRL_ENABLE_Msk;
+  FPB->COMP[0] = (address & 0xFFFFFFFE) | (0x01 << FPB_COMP_REPLACE_Pos)| FPB_COMP_ENABLE_Msk;
+}
+void test_function()
+{
+  for(uint8_t i = 0; i < 5; i++){
+    vTaskDelay(1000);
+    printf("Running to test_func !!!\r\n");
+	LOGI("Running to test_func !!!");
+  }
+}
 /* USER CODE END Application */
 
