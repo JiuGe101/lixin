@@ -62,6 +62,7 @@ const osThreadAttr_t defaultTask_attributes = {
 /* USER CODE BEGIN FunctionPrototypes */
 void set_breakpoint(uint32_t address);
 void test_function();
+__attribute__((noinline)) void origin_function(void);
 /* USER CODE END FunctionPrototypes */
 
 void StartDefaultTask(void *argument);
@@ -120,7 +121,7 @@ void StartDefaultTask(void *argument)
   /* USER CODE BEGIN StartDefaultTask */
     /* Infinite loop */
 //	printf("Default Task\r\n");
-//	//log_i("Default Task");
+	//log_i("Default Task");
 //	printf("Default Task1\r\n");
 //	int a = 10;
 //	int b = 5;
@@ -129,8 +130,9 @@ void StartDefaultTask(void *argument)
 //	printf("Default Task2\r\n");
 	// __BKPT(1);
 	// *WATCH_ADDRESS = 0x5678;
-	set_breakpoint((uint32_t)test_function);
-	test_function();
+//	set_breakpoint((uint32_t)test_function);
+//	test_function();
+	origin_function();
     for(;;)
     {
 		// __BKPT(1);
@@ -159,6 +161,13 @@ void test_function()
     vTaskDelay(1000);
     printf("Running to test_func !!!\r\n");
 	LOGI("Running to test_func !!!");
+  }
+}
+__attribute__((noinline)) void origin_function(void) {
+  while (1){
+    HAL_Delay(5000);
+    printf("Original function is running!!!\r\n");  
+	LOGI("Original function is running!!!");
   }
 }
 /* USER CODE END Application */

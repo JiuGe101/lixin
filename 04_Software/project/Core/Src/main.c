@@ -27,6 +27,8 @@
 #include "SEGGER_RTT.h"
 #include "elog.h"
 #include "stdio.h"
+#include "flash_patch.h"
+#include "fpb_lib.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -96,6 +98,7 @@ int main(void)
   SystemClock_Config();
 
   /* USER CODE BEGIN SysInit */
+	fpb_setup();
 	dwt_watchpoint_enable();
   /* USER CODE END SysInit */
 
