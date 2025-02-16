@@ -23,7 +23,7 @@ typedef struct
 
 typedef struct
 {
-    spk_gpio_interface_t *p_spk_gpiio_interface;
+    spk_gpio_interface_t *p_spk_gpio_interface;
     spk_busy_interface_t *p_spk_busy_interface;
     sys_interface_t      *p_sys_interface;
     int8_t (*pf_start_play)     (void *wt588_driver, uint8_t index);
